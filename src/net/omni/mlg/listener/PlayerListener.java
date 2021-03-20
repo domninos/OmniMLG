@@ -53,7 +53,6 @@ public class PlayerListener implements Listener {
                 Block placed = event.getBlockClicked().getRelative(event.getBlockFace());
 
                 plugin.getMLGHandler().add(player, placed);
-                plugin.sendConsole("&aadded " + placed.getType().name());
             }, 1L);
         }
     }
@@ -88,10 +87,8 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        if (!block.getType().name().endsWith("_BOAT")) {
+        if (!block.getType().name().endsWith("_BOAT"))
             plugin.getMLGHandler().add(player, block);
-            plugin.sendConsole("&aadded " + block.getType().name());
-        }
     }
 
     @EventHandler
@@ -110,7 +107,6 @@ public class PlayerListener implements Listener {
         Boat boat = (Boat) event.getVehicle();
 
         plugin.getMLGHandler().add(player, boat);
-        plugin.sendConsole("&aadded boat to " + player.getName());
     }
 
     @EventHandler

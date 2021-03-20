@@ -110,8 +110,6 @@ public class ItemHandler {
             playerItems.put(player, playerItems.get(player) + 1);
 
         plugin.getPotionHandler().addEffects(player, level);
-
-        plugin.sendConsole("set level of " + player.getName() + " to " + level);
     }
 
     public void removeLevels(Player player) {

@@ -7,7 +7,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class PotionHandler {
 
@@ -88,7 +87,7 @@ public class PotionHandler {
             }
 
             potionEffects.put(level, potionsSet);
-            plugin.sendConsole("&aLoaded " + key + "'s potion effects");
+            plugin.sendConsole("&bLoaded " + key + "'s potion effects");
         }
     }
 
@@ -102,9 +101,6 @@ public class PotionHandler {
 
         for (PotionEffect effect : effects)
             player.addPotionEffect(effect);
-
-        plugin.sendConsole("added effects: " + effects.stream().map(PotionEffect::getType).
-                map(PotionEffectType::getName).collect(Collectors.joining()));
     }
 
     public void removeEffects(Player player) {
