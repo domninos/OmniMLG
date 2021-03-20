@@ -158,8 +158,6 @@ public class OmniMLGCommand implements CommandExecutor {
 
                 target.teleport(mlgSchematic.getSpawn());
                 plugin.getItemHandler().giveMLGItems(target);
-
-                plugin.getPotionHandler().removeEffects(target);
             }
 
             return true;

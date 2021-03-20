@@ -109,7 +109,6 @@ public class ItemHandler {
         else
             playerItems.put(player, playerItems.get(player) + 1);
 
-        // TODO potion effects on a specified level in config
         plugin.getPotionHandler().addEffects(player, level);
 
         plugin.sendConsole("set level of " + player.getName() + " to " + level);
