@@ -4,6 +4,7 @@ import net.omni.mlg.commands.OmniMLGCommand;
 import net.omni.mlg.handler.ItemHandler;
 import net.omni.mlg.handler.MLGHandler;
 import net.omni.mlg.handler.PlayerHandler;
+import net.omni.mlg.handler.PotionHandler;
 import net.omni.mlg.listener.PlayerListener;
 import net.omni.mlg.schematic.SchematicHandler;
 import org.bukkit.Bukkit;
@@ -20,10 +21,15 @@ public class OmniMLGPlugin extends JavaPlugin {
     private PlayerHandler playerHandler;
     private SchematicHandler schematicHandler;
     private ItemHandler itemHandler;
+    private PotionHandler potionHandler;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
+
+        this.potionHandler = new PotionHandler(this);
+
+        potionHandler.loadPotions();
 
         this.schematicHandler = new SchematicHandler(this);
 
@@ -96,5 +102,9 @@ public class OmniMLGPlugin extends JavaPlugin {
 
     public PlayerHandler getPlayerHandler() {
         return playerHandler;
+    }
+
+    public PotionHandler getPotionHandler() {
+        return potionHandler;
     }
 }

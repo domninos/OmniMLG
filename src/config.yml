@@ -10,4 +10,6 @@ mlgItems:
 # POTION:AMPLIFIER
 levelPotionEffects:
   20:
-    - 'SLOWNESS:2'
+    - 'SLOW:1'
+  30:
+    - 'BLINDNESS:1'

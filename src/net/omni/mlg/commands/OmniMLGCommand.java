@@ -23,7 +23,7 @@ public class OmniMLGCommand implements CommandExecutor {
                 "&bAlias: /omnim, /mlg",
                 "&b/omnimlg join |player| &7» Sends the player to the schematic world.",
                 "&b/omnimlg leave |player| &7» Sends the player back to the main world.",
-                "&b/omnimlg update <player> &7» Updates the ",
+                "&b/omnimlg update <player> &7» Updates the level of the player.",
                 "&0&l&m---------------------------------"
         };
 
@@ -158,6 +158,8 @@ public class OmniMLGCommand implements CommandExecutor {
 
                 target.teleport(mlgSchematic.getSpawn());
                 plugin.getItemHandler().giveMLGItems(target);
+
+                plugin.getPotionHandler().removeEffects(target);
             }
 
             return true;
