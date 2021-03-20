@@ -1,0 +1,13 @@
+name: OmniMLG
+version: '1.0'
+author: omni
+api-version: '1.16'
+depend: [WorldEdit]
+main: net.omni.mlg.OmniMLGPlugin
+
+commands:
+  omnimlg:
+    usage: /<command>
+    aliases:
+      - mlg
+      - omnim

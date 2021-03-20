@@ -1,0 +1,13 @@
+mainWorld: world
+schematicWorld: flatworld
+
+mlgItems:
+  - 'WATER_BUCKET:1'
+  - 'SLIME_BLOCK:2'
+  - 'COBWEB:2'
+  - 'OAK_BOAT:1'
+
+# POTION:AMPLIFIER
+levelPotionEffects:
+  20:
+    - 'SLOWNESS:2'
