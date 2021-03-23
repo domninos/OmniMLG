@@ -1,13 +1,18 @@
 name: OmniMLG
+main: net.omni.mlg.OmniMLGPlugin
 version: '1.0'
 author: omni
 api-version: '1.16'
-depend: [WorldEdit]
-main: net.omni.mlg.OmniMLGPlugin
+softdepend:
+  - PlaceholderAPI
+  - Multiverse-Core
+depend:
+  - WorldEdit
 
 commands:
   omnimlg:
     usage: /<command>
+    description: Main command for OmniMLG.
     aliases:
       - mlg
       - omnim

@@ -1,6 +1,11 @@
 mainWorld: world
 schematicWorld: flatworld
 
+finished:
+  Notch: 50
+personal_best:
+  Notch: 50
+
 mlgItems:
   - 'WATER_BUCKET:1'
   - 'SLIME_BLOCK:2'

@@ -125,9 +125,10 @@ public class PlayerListener implements Listener {
         Player player = event.getEntity();
 
         if (player.getWorld().getName().equalsIgnoreCase(plugin.getSchematicHandler().getWorldName())) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                player.spigot().respawn();
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
+                    () -> player.spigot().respawn(), 1L);
 
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                 plugin.getPlayerHandler().tpToLastLocation(player);
                 plugin.getPlayerHandler().removePlayer(player);
 

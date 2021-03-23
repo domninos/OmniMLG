@@ -1,11 +1,9 @@
 package net.omni.mlg;
 
 import net.omni.mlg.commands.OmniMLGCommand;
-import net.omni.mlg.handler.ItemHandler;
-import net.omni.mlg.handler.MLGHandler;
-import net.omni.mlg.handler.PlayerHandler;
-import net.omni.mlg.handler.PotionHandler;
+import net.omni.mlg.handler.*;
 import net.omni.mlg.listener.PlayerListener;
+import net.omni.mlg.placeholder.MLGPlaceholder;
 import net.omni.mlg.schematic.SchematicHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,22 +15,32 @@ import java.nio.file.Files;
 
 public class OmniMLGPlugin extends JavaPlugin {
 
+    /*
+    TODO:
+     - Add TopHandler
+     */
+
     private MLGHandler mlgHandler;
     private PlayerHandler playerHandler;
     private SchematicHandler schematicHandler;
     private ItemHandler itemHandler;
+    private TopHandler topHandler;
     private PotionHandler potionHandler;
+    private LevelHandler levelHandler;
+    private ConfigHandler configHandler;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
 
+        this.configHandler = new ConfigHandler(this);
+        this.levelHandler = new LevelHandler(this);
+        this.topHandler = new TopHandler(this);
         this.potionHandler = new PotionHandler(this);
 
         potionHandler.loadPotions();
 
         this.schematicHandler = new SchematicHandler(this);
-
         this.mlgHandler = new MLGHandler(this);
 
         mlgHandler.loadMLGs();
@@ -41,6 +49,14 @@ public class OmniMLGPlugin extends JavaPlugin {
         this.itemHandler = new ItemHandler(this);
 
         itemHandler.loadMLGItems();
+
+        topHandler.update();
+
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new MLGPlaceholder(this).register();
+
+            sendConsole("&aPlaceholderAPI found, registered placeholder.");
+        }
 
         // [+] LISTENERS [+]
         new PlayerListener(this).register();
@@ -56,6 +72,7 @@ public class OmniMLGPlugin extends JavaPlugin {
         mlgHandler.flush();
         playerHandler.flush();
         itemHandler.flush();
+        levelHandler.flush();
 
         sendConsole("&aSuccessfully disabled OmniMLGPlugin");
     }
@@ -106,5 +123,17 @@ public class OmniMLGPlugin extends JavaPlugin {
 
     public PotionHandler getPotionHandler() {
         return potionHandler;
+    }
+
+    public TopHandler getTopHandler() {
+        return topHandler;
+    }
+
+    public LevelHandler getLevelHandler() {
+        return levelHandler;
+    }
+
+    public ConfigHandler getConfigHandler() {
+        return configHandler;
     }
 }

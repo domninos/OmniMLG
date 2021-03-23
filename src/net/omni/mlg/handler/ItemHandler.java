@@ -6,17 +6,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ItemHandler {
 
     private final OmniMLGPlugin plugin;
 
     private final List<ItemStack> mlgItems = new ArrayList<>();
-    private final Map<Player, Integer> playerLevels = new HashMap<>();
-    private final Map<Player, Integer> playerItems = new HashMap<>();
 
     public ItemHandler(OmniMLGPlugin plugin) {
         this.plugin = plugin;
@@ -65,15 +61,7 @@ public class ItemHandler {
 
         clear(player);
 
-        if (!hasLevels(player))
-            setLevel(player, 0);
-
-        int itemLevel = playerItems.get(player);
-
-        if (itemLevel > (mlgItems.size() - 1)) {
-            itemLevel = 0;
-            playerItems.put(player, 0);
-        }
+        int itemLevel = plugin.getLevelHandler().update(player);
 
         ItemStack item = mlgItems.get(itemLevel);
 
@@ -93,33 +81,11 @@ public class ItemHandler {
         return material != null && mlgItems.stream().anyMatch(item -> item.getType() == material);
     }
 
-    public boolean hasLevels(Player player) {
-        return playerLevels.containsKey(player);
-    }
-
-    public int getLevel(Player player) {
-        return playerLevels.getOrDefault(player, 0);
-    }
-
-    public void setLevel(Player player, int level) {
-        playerLevels.put(player, level);
-
-        if (!playerItems.containsKey(player))
-            playerItems.put(player, 0);
-        else
-            playerItems.put(player, playerItems.get(player) + 1);
-
-        plugin.getPotionHandler().addEffects(player, level);
-    }
-
-    public void removeLevels(Player player) {
-        playerLevels.remove(player);
-        playerItems.remove(player);
+    public int size() {
+        return mlgItems.size();
     }
 
     public void flush() {
         mlgItems.clear();
-        playerLevels.clear();
-        playerItems.clear();
     }
 }

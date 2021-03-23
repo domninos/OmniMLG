@@ -23,6 +23,7 @@ public class OmniMLGCommand implements CommandExecutor {
                 "&bAlias: /omnim, /mlg",
                 "&b/omnimlg join |player| &7» Sends the player to the schematic world.",
                 "&b/omnimlg leave |player| &7» Sends the player back to the main world.",
+                "&b/omnimlg level |player| &7» Shows a player's current or stored level.",
                 "&b/omnimlg update <player> &7» Updates the level of the player.",
                 "&0&l&m---------------------------------"
         };
@@ -40,7 +41,8 @@ public class OmniMLGCommand implements CommandExecutor {
             return true;
         } else if (args.length == 1) {
             if (!(args[0].equalsIgnoreCase("join")
-                    || args[0].equalsIgnoreCase("leave"))) {
+                    || args[0].equalsIgnoreCase("leave")
+                    || args[0].equalsIgnoreCase("level"))) {
                 plugin.sendMessage(sender, msg, false);
                 return true;
             }
@@ -85,12 +87,26 @@ public class OmniMLGCommand implements CommandExecutor {
 
                 plugin.getPlayerHandler().removePlayer(player);
                 plugin.getMLGHandler().removePlayer(player);
+            } else if (args[0].equalsIgnoreCase("level")) {
+                if (!sender.hasPermission("omnimlg.level"))
+                    return noPerms(sender);
+
+                if (!plugin.getMLGHandler().inMLG(player)) {
+                    plugin.sendMessage(player,
+                            "&cYou are not in an mlg. Use /omnimlg join to go to one.");
+                    return true;
+                }
+
+                int current_level = plugin.getLevelHandler().getLevel(player);
+
+                plugin.sendMessage(player, "&aYour current level: &b" + current_level);
             }
 
             return true;
         } else if (args.length == 2) {
             if (!(args[0].equalsIgnoreCase("join")
                     || args[0].equalsIgnoreCase("leave")
+                    || args[0].equalsIgnoreCase("level")
                     || args[0].equalsIgnoreCase("update"))) {
                 plugin.sendMessage(sender, msg, false);
                 return true;
@@ -100,14 +116,14 @@ public class OmniMLGCommand implements CommandExecutor {
 
             Player target = Bukkit.getPlayer(playerName);
 
-            if (target == null) {
-                plugin.sendMessage(sender, "&c" + playerName + " not found.");
-                return true;
-            }
-
             if (args[0].equalsIgnoreCase("join")) {
                 if (!sender.hasPermission("omnimlg.join.other"))
                     return noPerms(sender);
+
+                if (target == null) {
+                    plugin.sendMessage(sender, "&c" + playerName + " not found.");
+                    return true;
+                }
 
                 if (plugin.getMLGHandler().inMLG(target)) {
                     plugin.sendMessage(sender, "&c" + playerName + " is already in an mlg.");
@@ -119,6 +135,11 @@ public class OmniMLGCommand implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("Leave")) {
                 if (!sender.hasPermission("omnimlg.leave.other"))
                     return noPerms(sender);
+
+                if (target == null) {
+                    plugin.sendMessage(sender, "&c" + playerName + " not found.");
+                    return true;
+                }
 
                 if (!plugin.getMLGHandler().inMLG(target)) {
                     plugin.sendMessage(target, "&c" + playerName
@@ -142,6 +163,11 @@ public class OmniMLGCommand implements CommandExecutor {
                 if (!sender.hasPermission("omnimlg.update"))
                     return noPerms(sender);
 
+                if (target == null) {
+                    plugin.sendMessage(sender, "&c" + playerName + " not found.");
+                    return true;
+                }
+
                 if (!plugin.getMLGHandler().inMLG(target)) {
                     plugin.sendMessage(target, "&c" + playerName
                             + " is not in an mlg. Use /omnimlg join <player> to send the player to an mlg.");
@@ -152,12 +178,44 @@ public class OmniMLGCommand implements CommandExecutor {
 
                 mlgSchematic.update();
 
-                plugin.getItemHandler().setLevel(target, mlgSchematic.getLevel());
+                plugin.getLevelHandler().setLevel(target, mlgSchematic.getLevel());
 
                 plugin.getMLGHandler().clear(target);
 
                 target.teleport(mlgSchematic.getSpawn());
                 plugin.getItemHandler().giveMLGItems(target);
+            } else if (args[0].equalsIgnoreCase("level")) {
+                if (!sender.hasPermission("omnimlg.level.other"))
+                    return noPerms(sender);
+
+                if (target == null) {
+                    // offline
+
+                    if (!plugin.getConfigHandler().isInConfig(playerName)) {
+                        plugin.sendMessage(sender,
+                                "&c" + playerName + " is not found either in the server or config.");
+                        return true;
+                    }
+
+                    int levelInConfig = plugin.getConfigHandler().getLevelInConfig(playerName);
+
+                    plugin.sendMessage(sender, "&c" + playerName + "'s stored level: &b" + levelInConfig);
+
+                } else {
+                    // online
+
+                    if (!plugin.getMLGHandler().inMLG(target)) {
+                        plugin.sendMessage(sender, "&c" + target.getName() + " is not in an mlg.");
+                        return true;
+                    }
+
+                    int current_level = plugin.getLevelHandler().getLevel(target);
+
+                    plugin.sendMessage(sender,
+                            "&a" + target.getName() + "'s current level: &b" + current_level);
+                }
+
+
             }
 
             return true;

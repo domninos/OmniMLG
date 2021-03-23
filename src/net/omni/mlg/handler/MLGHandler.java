@@ -101,6 +101,7 @@ public class MLGHandler {
                             ChatColor.GOLD + String.valueOf(count--), 10, 10, 10);
                 else {
                     plugin.getItemHandler().giveMLGItems(player);
+                    plugin.getConfigHandler().start(player);
                     mlgSchematic.start();
                     cancel();
                 }
@@ -118,6 +119,9 @@ public class MLGHandler {
             return;
         }
 
+        plugin.getConfigHandler().finish(player);
+        plugin.getTopHandler().update();
+
         plugin.getItemHandler().clear(player);
 
         mlgSchematic.occupy(false);
@@ -125,7 +129,7 @@ public class MLGHandler {
         mlgSchematic.reset();
 
         playerMLG.remove(player);
-        plugin.getItemHandler().removeLevels(player);
+        plugin.getLevelHandler().removeLevels(player);
         clear(player);
     }
 
