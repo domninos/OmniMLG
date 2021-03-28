@@ -15,11 +15,6 @@ import java.nio.file.Files;
 
 public class OmniMLGPlugin extends JavaPlugin {
 
-    /*
-    TODO:
-     - Add TopHandler
-     */
-
     private MLGHandler mlgHandler;
     private PlayerHandler playerHandler;
     private SchematicHandler schematicHandler;

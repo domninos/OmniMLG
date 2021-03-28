@@ -20,7 +20,7 @@ public class TopHandler {
      * Updates the top 5 scores.
      */
     public void update() {
-        ConfigurationSection section = plugin.getConfig().getConfigurationSection("finished");
+        ConfigurationSection section = plugin.getConfig().getConfigurationSection("personal_best");
 
         if (section == null) {
             Arrays.fill(tops, "Unavailable");
@@ -31,7 +31,7 @@ public class TopHandler {
 
         for (String key : section.getKeys(false)) {
             if (key != null)
-                times.put(key, plugin.getConfig().getInt("finished." + key));
+                times.put(key, plugin.getConfig().getInt("personal_best." + key));
         }
 
         Map<String, Integer> topFive =

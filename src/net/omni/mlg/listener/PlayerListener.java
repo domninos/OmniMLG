@@ -9,6 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -32,6 +33,9 @@ public class PlayerListener implements Listener {
         if (!player.getWorld().getName().equalsIgnoreCase(plugin.getSchematicHandler().getWorldName()))
             return;
 
+        if (!plugin.getMLGHandler().inMLG(player))
+            return;
+
         if (player.getGameMode() == GameMode.CREATIVE)
             return;
 
@@ -46,7 +50,6 @@ public class PlayerListener implements Listener {
         if (!player.getWorld().getName().equalsIgnoreCase(plugin.getSchematicHandler().getWorldName()))
             return;
 
-
         if (event.getBucket() == Material.WATER_BUCKET) {
 
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
@@ -57,19 +60,20 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
 
         if (!player.getWorld().getName().equalsIgnoreCase(plugin.getSchematicHandler().getWorldName()))
             return;
 
+        if (!plugin.getMLGHandler().inMLG(player))
+            return;
+
         MLGSchematic mlgSchematic = plugin.getMLGHandler().getMLGFromPlayer(player);
 
-        if (mlgSchematic == null) {
-            plugin.sendConsole("&cCould not find mlg from " + player.getName());
+        if (mlgSchematic == null)
             return;
-        }
 
         if (!mlgSchematic.isStart()) {
             event.setCancelled(true);
