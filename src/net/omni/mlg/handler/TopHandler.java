@@ -3,10 +3,7 @@ package net.omni.mlg.handler;
 import net.omni.mlg.OmniMLGPlugin;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TopHandler {
@@ -25,8 +22,6 @@ public class TopHandler {
     public void update() {
         ConfigurationSection section = plugin.getConfig().getConfigurationSection("finished");
 
-        // TODO fix top
-
         if (section == null) {
             Arrays.fill(tops, "Unavailable");
             return;
@@ -41,7 +36,7 @@ public class TopHandler {
 
         Map<String, Integer> topFive =
                 times.entrySet().stream()
-                        .sorted(Map.Entry.comparingByValue())
+                        .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                         .limit(5)
                         .collect(Collectors.toMap(
                                 Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
