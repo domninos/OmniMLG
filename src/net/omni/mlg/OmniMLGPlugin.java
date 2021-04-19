@@ -77,7 +77,7 @@ public class OmniMLGPlugin extends JavaPlugin {
     }
 
     public void sendMessage(CommandSender sender, String message, boolean prefix) {
-        sender.sendMessage(translate(prefix ? "&3[&fOmni&bMLG&3]&r " + message : message));
+        sender.sendMessage(translate(prefix ? "&2&lS&a&lP &f» " + message : message));
     }
 
     public void sendConsole(String message) {
